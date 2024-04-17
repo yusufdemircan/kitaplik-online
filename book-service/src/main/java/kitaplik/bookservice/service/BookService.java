@@ -3,6 +3,7 @@ import kitaplik.bookservice.dto.BookDto;
 import kitaplik.bookservice.dto.BookIdDto;
 import kitaplik.bookservice.exception.BookNotFoundException;
 import kitaplik.bookservice.repository.BookRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class BookService {
         this.repository = repository;
     }
 
+    @Cacheable(cacheNames = "books")
     public List<BookDto> getAllBooks() {
         return repository.findAll().stream().map(BookDto.Companion::convert).collect(Collectors.toList());
 
