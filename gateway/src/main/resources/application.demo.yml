@@ -1,0 +1,29 @@
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: book-service
+          predicates:
+            - Path=/v1/book/**
+          uri: http://localhost:8085
+        - id: library-service
+          predicates:
+            - Path=/v1/library/**
+          uri: http://localhost:8082
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      default-zone: ${EUREKA_URI:http://localhost:8761/eureka}
+    register-with-eureka: true
+    fetch-registry: true
+
+server:
+  port: 9091
+
+
