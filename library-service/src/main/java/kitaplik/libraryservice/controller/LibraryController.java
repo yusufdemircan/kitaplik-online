@@ -24,7 +24,7 @@ public class LibraryController {
     }
 
     @GetMapping("getAllBooks")
-    public CompletableFuture<List<Map<Descriptors.FieldDescriptor, Object>>> getAllBooks() {
+    public CompletableFuture<List<BookDto>> getAllBooks() {
         return libraryService.getAllBooks();
     }
 

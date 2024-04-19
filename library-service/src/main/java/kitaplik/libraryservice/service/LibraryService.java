@@ -39,27 +39,27 @@ public class LibraryService {
         this.bookServiceClient = bookServiceClient;
     }
 
-    public CompletableFuture<List<Map<Descriptors.FieldDescriptor, Object>>> getAllBooks() {
-        CompletableFuture<List<Map<Descriptors.FieldDescriptor, Object>>> completableFuture = new CompletableFuture<>();
-        final List<Map<Descriptors.FieldDescriptor, Object>> resp = new ArrayList<>();
-
+    public CompletableFuture<List<BookDto>> getAllBooks() {
+        CompletableFuture<List<BookDto>> completableFutureBooks = new CompletableFuture<>();
+        final List<BookDto> books = new ArrayList<>();
         asyncBookServiceStub.getAllBooks(null, new StreamObserver<Book>() {
             @Override
             public void onNext(Book book) {
-                resp.add(book.getAllFields());
+                books.add(new BookDto(new BookIdDto(book.getBookId(), book.getIsbn()),book.getTitle(),book.getBookYear(),book.getAuthor(),book.getPressName()));
             }
 
             @Override
             public void onError(Throwable throwable) {
-                completableFuture.completeExceptionally(throwable);
+                completableFutureBooks.completeExceptionally(throwable);
             }
 
             @Override
             public void onCompleted() {
-                completableFuture.complete(resp);
+                completableFutureBooks.complete(books);
             }
         });
-        return completableFuture;
+
+        return completableFutureBooks;
     }
 
     public LibraryDto getAllBooksInLibraryById(String id) {
