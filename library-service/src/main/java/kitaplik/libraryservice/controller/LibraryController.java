@@ -1,10 +1,17 @@
 package kitaplik.libraryservice.controller;
 
+import com.google.protobuf.Descriptors;
+import com.kitaplik.bookservice.dto.Book;
 import kitaplik.libraryservice.dto.AddBookRequest;
+import kitaplik.libraryservice.dto.BookDto;
 import kitaplik.libraryservice.dto.LibraryDto;
 import kitaplik.libraryservice.service.LibraryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/v1/library")
@@ -14,6 +21,11 @@ public class LibraryController {
 
     public LibraryController(LibraryService libraryService) {
         this.libraryService = libraryService;
+    }
+
+    @GetMapping("getAllBooks")
+    public CompletableFuture<List<Map<Descriptors.FieldDescriptor, Object>>> getAllBooks() {
+        return libraryService.getAllBooks();
     }
 
     @GetMapping("{id}")
